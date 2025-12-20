@@ -1,10 +1,26 @@
-export default function DashboardCard({ title, value }) {
+export default function DashboardCard({ title, value, icon, color }) {
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-      <p className="text-gray-400 text-sm">{title}</p>
-      <h3 className="text-2xl font-bold text-green-400 mt-2">
-        {value}
-      </h3>
+    <div className="card card-hover p-6 flex items-center justify-between">
+      <div>
+        <p className="text-sm text-[var(--text-muted)] mb-1">
+          {title}
+        </p>
+        <p className="text-3xl font-bold tracking-tight">
+          {value}
+        </p>
+      </div>
+
+      {icon && (
+        <div
+          className={`
+            w-12 h-12 rounded-xl
+            flex items-center justify-center
+            ${color}
+          `}
+        >
+          {icon}
+        </div>
+      )}
     </div>
   );
 }

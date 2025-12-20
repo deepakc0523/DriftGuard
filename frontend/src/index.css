@@ -1,1 +1,194 @@
 @import "tailwindcss";
+
+/* ======================================================
+   DriftGuard — Enterprise / Security-grade Dark UI
+   ====================================================== */
+
+/* ---------- CSS VARIABLES (Design Tokens) ---------- */
+:root {
+  --bg-primary: #020617;
+  --bg-secondary: #020617;
+  --bg-card: #020617;
+
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  --text-primary: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  --accent-green: #22c55e;
+  --accent-yellow: #facc15;
+  --accent-red: #ef4444;
+  --accent-blue: #3b82f6;
+  --accent-purple: #a855f7;
+}
+
+/* ---------- GLOBAL BODY ---------- */
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      1200px 600px at 10% -10%,
+      rgba(34, 197, 94, 0.12),
+      transparent 40%
+    ),
+    radial-gradient(
+      800px 400px at 90% 10%,
+      rgba(59, 130, 246, 0.12),
+      transparent 45%
+    ),
+    linear-gradient(180deg, #020617, #020617 70%);
+  color: var(--text-primary);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* ---------- SMOOTHNESS ---------- */
+* {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* ======================================================
+   CARD SYSTEM (Used everywhere)
+   ====================================================== */
+
+.card {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.01)
+    );
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ---------- CARD HOVER (Premium feel) ---------- */
+.card-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      transparent
+    );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-hover:hover::before {
+  opacity: 1;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(34, 197, 94, 0.5);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(34, 197, 94, 0.15);
+}
+
+/* ======================================================
+   SIDEBAR POLISH (works with your Sidebar.jsx)
+   ====================================================== */
+
+aside {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 6, 23, 0.95),
+      rgba(2, 6, 23, 0.98)
+    );
+  border-right: 1px solid var(--glass-border);
+}
+
+/* Sidebar button glow on hover */
+aside button:hover {
+  box-shadow: inset 3px 0 0 var(--accent-green);
+}
+
+/* ======================================================
+   TABLES (Repositories page)
+   ====================================================== */
+
+table {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+thead {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ======================================================
+   STATUS COLORS (Semantic meaning)
+   ====================================================== */
+
+.text-success {
+  color: var(--accent-green);
+}
+.text-warning {
+  color: var(--accent-yellow);
+}
+.text-danger {
+  color: var(--accent-red);
+}
+.text-info {
+  color: var(--accent-blue);
+}
+
+/* ======================================================
+   BUTTON FEEL (Logout / Actions)
+   ====================================================== */
+
+button {
+  border-radius: 10px;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* ======================================================
+   SCROLLBAR (Premium touch)
+   ====================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #22c55e,
+    #3b82f6
+  );
+  border-radius: 8px;
+}

@@ -4,56 +4,72 @@ export default function Sidebar({ setPage }) {
   const { user } = useAuth();
 
   return (
-    <div className="w-64 bg-gray-900 text-white min-h-screen p-6">
-      <h2 className="text-xl font-bold text-green-400 mb-8">
-        🛡️ DriftGuard
-      </h2>
+    <aside className="w-64 min-h-screen px-6 py-8">
+      {/* Brand */}
+      <div className="mb-12">
+        <h1 className="text-2xl font-extrabold text-[var(--accent-green)]">
+          🛡 DriftGuard
+        </h1>
+        <p className="text-xs text-[var(--text-muted)] mt-1">
+          SCM Drift Control
+        </p>
+      </div>
 
-      <nav className="space-y-4">
-        <button
+      {/* Navigation */}
+      <nav className="space-y-2">
+        <SidebarButton
+          label="Dashboard"
           onClick={() => setPage("overview")}
-          className="block text-left w-full hover:text-green-400"
-        >
-          Dashboard
-        </button>
+        />
 
         {(user.role === "admin" || user.role === "developer") && (
-          <button
-            onClick={() => setPage("repos")}
-            className="block text-left w-full hover:text-green-400"
-          >
-            Repositories
-          </button>
+          <>
+            <SidebarButton
+              label="Repositories"
+              onClick={() => setPage("repos")}
+            />
+            <SidebarButton
+              label="Drift Alerts"
+              onClick={() => setPage("drift")}
+            />
+            <SidebarButton
+              label="Audit Logs"
+              onClick={() => setPage("audit")}
+            />
+          </>
         )}
 
-        {(user.role === "admin" || user.role === "developer") && (
-          <button
-            onClick={() => setPage("drift")}
-            className="block text-left w-full hover:text-green-400"
-          >
-            Drift Alerts
-          </button>
-        )}
-
-        {(user.role === "admin" || user.role === "developer") && (
-          <button
-            onClick={() => setPage("audit")}
-            className="block text-left w-full hover:text-green-400"
-          >
-            Audit Logs
-          </button>
-        )}
-
-        {/* Admin only */}
         {user.role === "admin" && (
-          <button
+          <SidebarButton
+            label="Change Requests"
             onClick={() => setPage("changes")}
-            className="block text-left w-full hover:text-green-400"
-          >
-            Change Requests
-          </button>
+            highlight
+          />
         )}
       </nav>
-    </div>
+    </aside>
+  );
+}
+
+/* ===== Reusable Button ===== */
+
+function SidebarButton({ label, onClick, highlight = false }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        w-full text-left px-4 py-3 rounded-lg
+        text-sm font-medium
+        ${
+          highlight
+            ? "text-[var(--accent-yellow)]"
+            : "text-[var(--text-primary)]"
+        }
+        hover:bg-white/5
+        hover:text-[var(--accent-green)]
+      `}
+    >
+      {label}
+    </button>
   );
 }

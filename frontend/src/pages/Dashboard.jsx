@@ -5,11 +5,13 @@ import DashboardCard from "../components/DashboardCard";
 import { useRepos } from "../components/RepoContext";
 import AddRepoForm from "../components/AddRepoForm";
 
-
+import DriftOverview from "./drift/DriftOverview";
+import DriftDetail from "./drift/DriftDetail";
+import AuditLogs from "./audit/AuditLogs";   // ✅ ADD THIS
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
-  const { repos, addRepo } = useRepos(); // ✅ NOW USED
+  const { repos, addRepo } = useRepos();
   const [page, setPage] = useState("overview");
 
   return (
@@ -36,7 +38,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* OVERVIEW */}
+        {/* ================= OVERVIEW ================= */}
         {page === "overview" && (
           <div className="grid md:grid-cols-3 gap-6">
             <DashboardCard title="Repositories" value={repos.length} />
@@ -45,7 +47,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* REPOSITORIES */}
+        {/* ================= REPOSITORIES ================= */}
         {page === "repos" && (
           <div>
             <h2 className="text-xl font-semibold mb-4">Repositories</h2>
@@ -91,28 +93,23 @@ export default function Dashboard() {
               </tbody>
             </table>
 
-            {/* ADD REPO FORM (Admin + Developer only) */}
+            {/* Add Repo Form (Admin + Developer only) */}
             {user.role !== "viewer" && (
               <AddRepoForm addRepo={addRepo} />
             )}
           </div>
         )}
 
-        {/* DRIFT */}
-        {page === "drift" && (
-          <p className="text-yellow-400">
-            ⚠️ Drift detected in repository: driftguard-ui
-          </p>
-        )}
+        {/* ================= DRIFT OVERVIEW ================= */}
+        {page === "drift" && <DriftOverview setPage={setPage} />}
 
-        {/* AUDIT */}
-        {page === "audit" && (
-          <p className="text-gray-400">
-            Audit logs will appear here.
-          </p>
-        )}
+        {/* ================= DRIFT DETAIL ================= */}
+        {page === "drift-detail" && <DriftDetail setPage={setPage} />}
 
-        {/* ADMIN ONLY */}
+        {/* ================= AUDIT LOGS ================= */}
+        {page === "audit" && <AuditLogs />}   {/* ✅ FIXED */}
+
+        {/* ================= CHANGE REQUESTS ================= */}
         {page === "changes" && user.role === "admin" && (
           <p className="text-green-400">
             Pending change requests (Admin only)

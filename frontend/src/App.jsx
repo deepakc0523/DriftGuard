@@ -10,9 +10,7 @@ function App() {
   const { user } = useAuth();
   const [page, setPage] = useState("landing");
 
-  if (user) {
-    return <Dashboard />;
-  }
+  if (user) return <Dashboard />;
 
   if (page === "login") {
     return <Login goToSignup={() => setPage("signup")} />;

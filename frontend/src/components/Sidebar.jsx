@@ -10,25 +10,46 @@ export default function Sidebar({ setPage }) {
       </h2>
 
       <nav className="space-y-4">
-        <button onClick={() => setPage("overview")} className="block text-left w-full hover:text-green-400">
+        <button
+          onClick={() => setPage("overview")}
+          className="block text-left w-full hover:text-green-400"
+        >
           Dashboard
         </button>
 
-        <button onClick={() => setPage("repos")} className="block text-left w-full hover:text-green-400">
-          Repositories
-        </button>
+        {(user.role === "admin" || user.role === "developer") && (
+          <button
+            onClick={() => setPage("repos")}
+            className="block text-left w-full hover:text-green-400"
+          >
+            Repositories
+          </button>
+        )}
 
-        <button onClick={() => setPage("drift")} className="block text-left w-full hover:text-green-400">
-          Drift Alerts
-        </button>
+        {(user.role === "admin" || user.role === "developer") && (
+          <button
+            onClick={() => setPage("drift")}
+            className="block text-left w-full hover:text-green-400"
+          >
+            Drift Alerts
+          </button>
+        )}
 
-        <button onClick={() => setPage("audit")} className="block text-left w-full hover:text-green-400">
-          Audit Logs
-        </button>
+        {(user.role === "admin" || user.role === "developer") && (
+          <button
+            onClick={() => setPage("audit")}
+            className="block text-left w-full hover:text-green-400"
+          >
+            Audit Logs
+          </button>
+        )}
 
         {/* Admin only */}
         {user.role === "admin" && (
-          <button onClick={() => setPage("changes")} className="block text-left w-full hover:text-green-400">
+          <button
+            onClick={() => setPage("changes")}
+            className="block text-left w-full hover:text-green-400"
+          >
             Change Requests
           </button>
         )}

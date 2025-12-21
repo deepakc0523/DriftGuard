@@ -8,9 +8,11 @@ export default function Login({ goToSignup }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = login(email, password);
+    setError("");
+
+    const res = await login(email, password);
 
     if (!res.success) {
       setError(res.message);
@@ -47,7 +49,10 @@ export default function Login({ goToSignup }) {
           required
         />
 
-        <button className="w-full bg-green-500 text-black py-3 rounded font-semibold hover:bg-green-400">
+        <button
+          type="submit"
+          className="w-full bg-green-500 text-black py-3 rounded font-semibold hover:bg-green-400 cursor-pointer"
+        >
           Sign In
         </button>
 
@@ -56,7 +61,7 @@ export default function Login({ goToSignup }) {
           <button
             type="button"
             onClick={goToSignup}
-            className="text-green-400 underline"
+            className="text-green-400 underline cursor-pointer"
           >
             Create one
           </button>

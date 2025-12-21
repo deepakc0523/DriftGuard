@@ -1,40 +1,77 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [users, setUsers] = useState([]); // registered users
-  const [user, setUser] = useState(null); // logged-in user
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const signup = (email, password, role) => {
-    const exists = users.find((u) => u.email === email);
-    if (exists) {
-      return { success: false, message: "User already exists" };
+  // 🔁 Load auth on refresh
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    const savedToken = localStorage.getItem("token");
+
+    if (savedUser && savedToken) {
+      setUser(JSON.parse(savedUser));
+      setToken(savedToken);
     }
+    setLoading(false);
+  }, []);
 
-    setUsers([...users, { email, password, role }]);
-    return { success: true };
+  // 🆕 SIGNUP (FIXED)
+  const signup = async (email, password, role) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        { email, password, role }
+      );
+
+      return { success: true };
+    } catch (err) {
+      return {
+        success: false,
+        message: err.response?.data?.message || "Signup failed",
+      };
+    }
   };
 
-  const login = (email, password) => {
-    const found = users.find(
-      (u) => u.email === email && u.password === password
-    );
+  // 🔐 LOGIN
+  const login = async (email, password) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        { email, password }
+      );
 
-    if (!found) {
-      return { success: false, message: "Invalid credentials" };
+      setUser(res.data.user);
+      setToken(res.data.token);
+
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("token", res.data.token);
+
+      return { success: true };
+    } catch (err) {
+      return {
+        success: false,
+        message: err.response?.data?.message || "Invalid credentials",
+      };
     }
-
-    setUser(found);
-    return { success: true };
   };
 
-  const logout = () => setUser(null);
+  // 🚪 LOGOUT
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  };
+
+  if (loading) return null;
 
   return (
-    <AuthContext.Provider
-      value={{ user, users, signup, login, logout }}
-    >
+    <AuthContext.Provider value={{ user, token, signup, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

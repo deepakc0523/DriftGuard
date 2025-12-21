@@ -39,6 +39,7 @@ export default function Sidebar({ setPage }) {
           </>
         )}
 
+        {/* ✅ ADMIN ONLY */}
         {user.role === "admin" && (
           <SidebarButton
             label="Change Requests"

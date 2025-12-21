@@ -8,6 +8,7 @@ import AddRepoForm from "../components/AddRepoForm";
 import DriftOverview from "./drift/DriftOverview";
 import DriftDetail from "./drift/DriftDetail";
 import AuditLogs from "./audit/AuditLogs";
+import ChangeRequests from "./admin/ChangeRequests"; // ✅ ADD THIS
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -137,9 +138,7 @@ export default function Dashboard() {
 
         {/* ================= CHANGE REQUESTS ================= */}
         {page === "changes" && user.role === "admin" && (
-          <div className="card p-6 text-green-400">
-            Pending change requests (Admin only)
-          </div>
+          <ChangeRequests />   // ✅ REAL PAGE CONNECTED
         )}
       </div>
     </div>

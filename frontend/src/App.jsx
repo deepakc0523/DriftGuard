@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "./components/AuthContext";
 
 import Landing from "./pages/Landing";
@@ -10,6 +10,14 @@ function App() {
   const { user } = useAuth();
   const [page, setPage] = useState("landing");
 
+  // ✅ When user logs out → go back to Landing
+  useEffect(() => {
+    if (!user) {
+      setPage("landing");
+    }
+  }, [user]);
+
+  // Logged in → Dashboard
   if (user) return <Dashboard />;
 
   if (page === "login") {

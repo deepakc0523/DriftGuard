@@ -9,14 +9,16 @@ export default function Signup({ onSuccess, goToLogin }) {
   const [role, setRole] = useState("viewer");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = signup(email, password, role);
+    setError("");
+
+    const res = await signup(email, password, role);
 
     if (!res.success) {
       setError(res.message);
     } else {
-      onSuccess(); // redirect to login
+      onSuccess();
     }
   };
 
@@ -60,7 +62,10 @@ export default function Signup({ onSuccess, goToLogin }) {
           <option value="viewer">Viewer</option>
         </select>
 
-        <button className="w-full bg-green-500 text-black py-3 rounded font-semibold hover:bg-green-400">
+        <button
+          type="submit"
+          className="w-full bg-green-500 text-black py-3 rounded font-semibold hover:bg-green-400 cursor-pointer"
+        >
           Sign Up
         </button>
 
@@ -69,7 +74,7 @@ export default function Signup({ onSuccess, goToLogin }) {
           <button
             type="button"
             onClick={goToLogin}
-            className="text-green-400 underline"
+            className="text-green-400 underline cursor-pointer"
           >
             Sign In
           </button>

@@ -7,6 +7,7 @@ import { AuthProvider } from "./components/AuthContext";
 import { RepoProvider } from "./components/RepoContext";
 import { AuditProvider } from "./context/AuditContext";
 import { DriftProvider } from "./context/DriftContext";
+import { ChangeRequestProvider } from "./context/ChangeRequestContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")).render(
       <RepoProvider>
         <AuditProvider>
           <DriftProvider>
-            <App />
+            <ChangeRequestProvider>
+              <App />
+            </ChangeRequestProvider>
           </DriftProvider>
         </AuditProvider>
       </RepoProvider>

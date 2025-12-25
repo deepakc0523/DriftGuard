@@ -11,6 +11,7 @@ const baselineRoutes = require("./routes/baseline.routes");
 const changeRequestRoutes = require("./routes/changeRequest.routes");
 const githubTestRoutes = require("./routes/githubTest.routes");
 const driftRoutes = require("./routes/drift.routes");
+const driftAlertRoutes = require("./routes/driftAlert.routes");
 
 
 
@@ -29,6 +30,7 @@ app.use("/api/baseline", baselineRoutes);
 app.use("/api", changeRequestRoutes);
 app.use("/api/test", githubTestRoutes);
 app.use("/api", driftRoutes);
+app.use("/api/drift-alerts", driftAlertRoutes);
 
 
 

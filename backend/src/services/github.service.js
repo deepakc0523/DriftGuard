@@ -1,23 +1,26 @@
 const axios = require("axios");
 
-// ------------------------------------
-// Parse GitHub URL
-// ------------------------------------
-const parseGithubUrl = (url) => {
-  const parts = url.replace("https://github.com/", "").split("/");
-  return {
-    owner: parts[0],
-    repo: parts[1],
-  };
-};
+// 🔹 Extract owner & repo from GitHub URL
+function parseRepoUrl(githubUrl) {
+  // examples:
+  // https://github.com/user/repo.git
+  // https://github.com/user/repo
 
-// ------------------------------------
-// Get latest commit SHA (Phase 1)
-// ------------------------------------
-const getLatestCommit = async (githubUrl) => {
-  const { owner, repo } = parseGithubUrl(githubUrl);
+  const cleaned = githubUrl
+    .replace("https://github.com/", "")
+    .replace(".git", "")
+    .trim();
 
-  const response = await axios.get(
+  const [owner, repo] = cleaned.split("/");
+
+  return { owner, repo };
+}
+
+// 🔹 Get latest commit SHA
+exports.getLatestCommit = async (githubUrl) => {
+  const { owner, repo } = parseRepoUrl(githubUrl);
+
+  const res = await axios.get(
     `https://api.github.com/repos/${owner}/${repo}/commits`,
     {
       headers: {
@@ -27,17 +30,15 @@ const getLatestCommit = async (githubUrl) => {
     }
   );
 
-  return response.data[0].sha;
+  return res.data[0].sha; // latest commit SHA
 };
 
-// ------------------------------------
-// Compare baseline vs latest (Phase 3)
-// ------------------------------------
-const compareCommits = async (githubUrl, baseCommit, headCommit) => {
-  const { owner, repo } = parseGithubUrl(githubUrl);
+// 🔹 Compare two commits
+exports.compareCommits = async (githubUrl, base, head) => {
+  const { owner, repo } = parseRepoUrl(githubUrl);
 
-  const response = await axios.get(
-    `https://api.github.com/repos/${owner}/${repo}/compare/${baseCommit}...${headCommit}`,
+  const res = await axios.get(
+    `https://api.github.com/repos/${owner}/${repo}/compare/${base}...${head}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
@@ -46,10 +47,5 @@ const compareCommits = async (githubUrl, baseCommit, headCommit) => {
     }
   );
 
-  return response.data.files; // changed files
-};
-
-module.exports = {
-  getLatestCommit,
-  compareCommits,
+  return res.data.files;
 };

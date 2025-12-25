@@ -28,10 +28,19 @@ export default function Sidebar({ setPage }) {
               label="Repositories"
               onClick={() => setPage("repos")}
             />
+
+            {/* 🔧 Operational drift page */}
             <SidebarButton
-              label="Drift Alerts"
+              label="Drift Overview"
               onClick={() => setPage("drift")}
             />
+
+            {/* 👁️ Read-only monitoring page */}
+            <SidebarButton
+              label="Drift Alerts"
+              onClick={() => setPage("drift-alerts")}
+            />
+
             <SidebarButton
               label="Audit Logs"
               onClick={() => setPage("audit")}
